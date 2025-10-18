@@ -1,0 +1,27 @@
+import { JsonResponse } from "../interfaces/json-response.interface";
+
+export function successResponse<T>(
+  data: T,
+  message: string = "Operation successful",
+  statusCode: number = 200,
+): JsonResponse<T> {
+  return {
+    status_code: statusCode,
+    timestamp: new Date().toISOString(),
+    message,
+    data,
+  };
+}
+
+export function errorResponse(
+  error: any,
+  message: string,
+  statusCode: number = 500,
+): JsonResponse<any> {
+  return {
+    status_code: statusCode,
+    timestamp: new Date().toISOString(),
+    message,
+    error,
+  };
+}

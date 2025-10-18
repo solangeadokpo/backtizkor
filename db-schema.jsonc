@@ -1,0 +1,187 @@
+/** Schéma de la DB mongo**/
+/** User **/
+{
+    "_id": "ObjectId",
+    "phone_number": "String", // unique,
+    "zehout_id": "String", // unique,
+    "first_name": "String",
+    "last_name": "String",
+    "bith_date": "Date", // Date de naissance
+    "role": "ObjectId", // Role
+    "status": "String", // "active", "inactive", "banned"
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date", // null if not deleted
+    "last_login": "Date" // null if never logged in
+}
+
+/** OTP Codes **/
+{
+    "_id": "ObjectId",
+    "user_id": "ObjectId", // Référence à l'utilisateur
+    "code": "String", // Code OTP
+    "expires_at": "Date", // Date d'expiration du code
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Role **/
+{
+    "_id": "ObjectId",
+    "name": "String", // unique
+    "permissions": ["String"] // Array of permission names
+}
+
+
+/** Memorials **/
+/**
+nom, prénoms, date de naissance, date de décès,
+biographie courte (optionnel),
+biographie longue, lien externe, référence,
+status, nom & prénoms pour les membres de la famille,
+témoignage/message(livre d'or).
+- Informations de gestion des médias (profil, media)
+- Gestion des accès: (le mémorial concerné, les informations de l'utilisateur, le numéro d'identification, status.
+**/
+{
+    "_id": "ObjectId",
+    "reference": "String", // Référence unique du mémorial
+    "name": "String", // Nom du mémorial
+    "defuncts": [
+        {
+            "user_id": "ObjectId", // Référence à l'utilisateur (optionnel)
+            "first_name": "String", // Prénom
+            "last_name": "String", // Nom de famille
+            "relation": "String", // Relation avec le mémorial (optionnel), (par exemple, couple)
+            "birth_date": "Date", // Date de naissance
+            "death_date": "Date", // Date de décès,
+            "hebraic_death_date": "Date", // Date de décès hébraïque
+        }
+    ],
+    "family_members": [
+        {
+            "user_id": "ObjectId", // Référence à l'utilisateur (optionnel)
+            "relation": "String" // Relation avec le mémorial (par exemple, frère, sœur)
+        }
+    ],
+    "profile": {
+        "url": "String", // URL de l'image de profil
+        "type": "String" // Type de média (par exemple, image, vidéo)
+    },
+    "medias": [
+        {
+            "url": "String", // URL du média
+            "type": "String" // Type de média (par exemple, image, vidéo)
+        }
+    ],
+    "short_biography": "String", // Biographie courte (optionnel)
+    "long_biography": "String", // Biographie longue
+    "external_link": "String", // Lien externe
+    "reference": "String", // Référence
+    "type": "String", // Status du mémorial (par exemple, private, public, on_demand)
+    "status": "String", // Status du mémorial (par exemple, active, expired, closed)
+    "created_by": "ObjectId", // Référence à l'utilisateur qui a créé le mémorial
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Testimonials **/
+{
+    "_id": "ObjectId",
+    "memorial": "ObjectId", // Référence au mémorial
+    "user": "ObjectId", // Référence à l'utilisateur (optionnel)
+    "message": "String", // Message du témoignage
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Access Demand **/
+{
+    "_id": "ObjectId",
+    "memorial_id": "ObjectId", // Référence au mémorial
+    "user_id": "ObjectId", // Référence à l'utilisateur
+    "status": "String", // Status de l'accès (par exemple, active, revoked)
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Memorial Whitelist **/
+{
+    "_id": "ObjectId",
+    "memorial_id": "ObjectId", // Référence au mémorial
+    "user_id": "ObjectId", // Référence à l'utilisateur
+    "start_date": "Date", // Date de début d'accès
+    "access_duration": "Number", // Durée d'accès en heures (Optional),
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Memorial Access Log **/
+{
+    "_id": "ObjectId",
+    "memorial_id": "ObjectId", // Référence au mémorial
+    "user_id": "ObjectId", // Référence à l'utilisateur
+    "accessed_at": "Date", // Date et heure d'accès
+    "action": "String", // Action effectuée (par exemple, view, edit)
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Reminder **/
+{
+    "_id": "ObjectId",
+    "memorial_id": "ObjectId", // Référence au mémorial
+    "type": "String", // Type de notification (par exemple, yahrzeit, closed_period, other)
+    "channel": "String", // Canal de notification (par exemple, whatapp, app)
+    "message": "String", // Message de la notification
+    "status": "String", // Status de la notification (par exemple, unread, read)
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+/** Closed periods **/
+{
+    "_id": "ObjectId",
+    "start_date": "Date", // Date de début de la période fermée
+    "end_date": "Date", // Date de fin de la période fermée
+    "reason": "String", // Raison de la fermeture (par exemple, maintenance, holiday)
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+
+/** Subscription Plan **/
+{
+    "_id": "ObjectId",
+    "name": "String", // Nom du plan d'abonnement
+    "price": "Number", // Prix du plan
+    "currency": "String", // Devise du prix (par exemple, EUR, USD)
+    "duration": "String", // Durée de l'abonnement (par exemple, monthly, yearly)
+    "features": ["String"], // Liste des fonctionnalités incluses dans le plan
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}
+
+
+/** Subscription **/
+{
+    "_id": "ObjectId",
+    "user_id": "ObjectId", // Référence à l'utilisateur
+    "plan_id": "ObjectId", // Référence au plan d'abonnement
+    "memorial_id": "ObjectId", // Référence au mémorial (optionnel)
+    "start_date": "Date", // Date de début de l'abonnement
+    "end_date": "Date", // Date de fin de l'abonnement
+    "status": "String", // Status de l'abonnement (par exemple, active, cancelled, expired)
+    "created_at": "Date",
+    "updated_at": "Date",
+    "deleted_at": "Date" // null if not deleted
+}

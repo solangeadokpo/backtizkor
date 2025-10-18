@@ -1,0 +1,12 @@
+node_modules
+dist
+
+.DS_Store
+# Logs
+
+npm-debug.log*
+# Dependency directories
+
+#Env file
+.env
+.env.example
