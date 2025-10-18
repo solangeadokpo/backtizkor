@@ -8,9 +8,8 @@ export const DatabaseProvider = MongooseModule.forRootAsync({
     const user = configService.usernname;
     const pass = configService.password;
     const host = configService.host;
-    const port = configService.port;
     const db = configService.database;
-    const uri = `mongodb://${user}:${encodeURIComponent(pass)}@${host}:${port}/${db}`;
+    const uri = `mongodb+srv://${user}:${encodeURIComponent(pass)}@${host}/${db}?retryWrites=true&w=majority`;
 
     return {
       uri,
